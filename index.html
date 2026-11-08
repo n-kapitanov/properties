@@ -2,6 +2,7 @@
 <html lang="bg">
 <head>
 <meta charset="utf-8">
+<meta name="color-scheme" content="light only">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Жилища с Ник Капитанов</title>
 <meta name="description" content="Подбрани имоти във Варна и региона за собствен дом или за отдаване под наем. Ник Капитанов, ЕРА Вива.">
@@ -17,22 +18,18 @@
   --mono:"IBM Plex Mono", ui-monospace, Menlo, monospace;
   color-scheme:light;
 }
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#141416; --surface:#1E1E22; --ink:#F2F2F3; --muted:#A3A3AB; --line:#2E2E34;
-  --sea:#FF4D63; --sea-soft:#3A1A20; --brass:#F2F2F3; --warn:#F2B84B; --warn-soft:#3A2E14;
-  --tile-a:#3A3A40; --tile-b:#4A4A52; --tile-c:#5A5048; color-scheme:dark}}
 *{box-sizing:border-box}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5}
 .wrap{max-width:560px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-top:calc(20px + env(safe-area-inset-top,0px));padding-bottom:120px}
 header{display:grid;gap:6px;padding-block:8px 18px}
-.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--sea)}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
 h1{font-family:var(--display);font-weight:400;font-size:30px;line-height:1.15;margin:0;text-wrap:balance}
 .lede{color:var(--muted);margin:0;max-width:60ch}
 .chips{display:flex;gap:8px;overflow-x:auto;padding-block:4px 14px;scrollbar-width:none}
 .chips::-webkit-scrollbar{display:none}
 .chip{flex:none;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:500 14px var(--body);padding:8px 14px;border-radius:999px;cursor:pointer}
-.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip[aria-pressed="true"]{background:var(--surface);color:var(--ink);border:2px solid var(--sea);padding:7px 13px;font-weight:600}
 .chip:focus-visible,.card:focus-visible,.btn:focus-visible,.back:focus-visible{outline:2px solid var(--sea);outline-offset:2px}
 .count{font-size:13px;color:var(--muted);margin:0 0 10px}
 .list{display:grid;gap:14px}
@@ -63,11 +60,11 @@ h1{font-family:var(--display);font-weight:400;font-size:30px;line-height:1.15;ma
 .crow{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-top:4px}
 .price{font-weight:700;color:var(--brass);font-variant-numeric:tabular-nums}
 .price.ask{font-weight:500;color:var(--muted);font-size:13.5px}
-.pill{font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:999px;background:var(--sea-soft);color:var(--sea);white-space:nowrap}
+.pill{font-size:11.5px;font-weight:600;padding:2px 8px;border-radius:999px;background:transparent;border:1px solid var(--sea);color:var(--ink);white-space:nowrap}
 .pill.repair{background:var(--warn-soft);color:var(--warn)}
-.pill.new{background:transparent;border:1px solid var(--sea)}
+.pill.new{}
 .detail{display:grid;gap:18px}
-.back{justify-self:start;background:none;border:0;color:var(--sea);font:600 15px var(--body);padding:6px 0;cursor:pointer}
+.back{justify-self:start;background:none;border:0;color:var(--ink);font:600 15px var(--body);padding:6px 0;cursor:pointer}
 .hero{border-radius:16px;min-height:170px}
 .hero .no{font-size:30px}
 .dhead{display:grid;gap:6px}
@@ -159,7 +156,7 @@ function list(){
     <div class="tile ${tileClass(p)}${tileStyle(p)}"><span class="no">${esc(p.short)}</span><span class="rooms">№ ${p.no}</span></div>
     <div class="cbody"><span class="ctitle">${title(p)}</span><span class="cplace">${esc(p.place)}</span><span class="cmeta">${esc(p.area)}</span>
     <div class="crow">${priceHtml(p,"price")}<span class="pill ${s[1]}">${s[0]}</span></div></div></button>`}).join("")||'<p class="count">Няма имоти в този филтър.</p>'}</div>`;
-  app.querySelectorAll(".chip").forEach(b=>b.onclick=()=>{filter=b.dataset.f;try{localStorage.setItem("zh-filter",filter)}catch(e){}list()});
+  app.querySelectorAll(".chip").forEach(b=>b.onclick=()=>{const x=app.querySelector(".chips").scrollLeft;filter=b.dataset.f;try{localStorage.setItem("zh-filter",filter)}catch(e){}list();app.querySelector(".chips").scrollLeft=x});
   app.querySelectorAll(".card").forEach(c=>c.onclick=()=>{location.hash=c.dataset.id});
 }
 function detail(p){
