@@ -4,8 +4,25 @@
 <meta charset="utf-8">
 <meta name="color-scheme" content="light only">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Жилища с Ник Капитанов</title>
-<meta name="description" content="Подбрани имоти във Варна и региона за собствен дом или за отдаване под наем. Ник Капитанов, ЕРА Вива.">
+<title>Купи имот с Ник</title>
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://n-kapitanov.github.io/properties/">
+<meta property="og:title" content="Купи имот с Ник">
+<meta property="og:description" content="Подбрани имоти във Варна и региона. Ник Капитанов, ЕРА Вива, 0878 760 894.">
+<meta property="og:image" content="https://n-kapitanov.github.io/properties/brand/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="bg_BG">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="brand/favicon.png">
+<link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Купи имот с Ник">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="description" content="Подбрани имоти във Варна и региона за собствен дом или за отдаване под наем. Ник Капитанов, ЕРА Вива, 0878 760 894.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Prata&family=Commissioner:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
 <style>
@@ -23,6 +40,7 @@ html{scroll-padding-top:env(safe-area-inset-top,0px)}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5}
 .wrap{max-width:560px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-top:calc(20px + env(safe-area-inset-top,0px));padding-bottom:120px}
 header{display:grid;gap:6px;padding-block:8px 18px}
+.brand{width:132px;height:auto;margin:0 0 6px -4px}
 .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
 h1{font-family:var(--display);font-weight:400;font-size:30px;line-height:1.15;margin:0;text-wrap:balance}
 .lede{color:var(--muted);margin:0;max-width:60ch}
@@ -151,7 +169,7 @@ const pills=p=>{const s=STATUS[p.status];return `<span class="pills"><span class
 const priceHtml=(p,cls)=>p.price?`<span class="${cls}">${esc(p.price)}</span>`:`<span class="${cls} ask">Цена при запитване</span>`;
 function list(){
   const items=P.filter(match);
-  app.innerHTML=`<header><span class="eyebrow">Варна и региона · ${P.length} имота</span><h1>Жилища за вас и семейството</h1><p class="lede">Подбрани имоти за собствен дом или за отдаване под наем. Докоснете имот за подробности.</p></header>
+  app.innerHTML=`<header><img class="brand" src="brand/logo-small.png" alt="Ник Капитанов · имоти" width="132" height="76"><span class="eyebrow">Варна и региона · ${P.length} имота</span><h1>Жилища за вас и семейството</h1><p class="lede">Подбрани имоти за собствен дом или за отдаване под наем. Докоснете имот за подробности.</p></header>
   <div class="chips" role="group" aria-label="Филтър">${FILTERS.map(([k,l])=>`<button class="chip" type="button" data-f="${k}" aria-pressed="${k===filter}">${l}</button>`).join("")}</div>
   <p class="count">${items.length===P.length?"Показани всички":"Показани "+items.length+" от "+P.length}</p>
   <div class="list">${items.map(p=>{const s=STATUS[p.status];return `<button class="card" type="button" data-id="${p.id}">
