@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="bg">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Жилища с Ник Капитанов</title>
+<meta name="description" content="Подбрани имоти във Варна и региона за собствен дом или за отдаване под наем. Ник Капитанов, ЕРА Вива.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Prata&family=Commissioner:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+:root{
+  --bg:#EEF2F1; --surface:#FFFFFF; --ink:#12232C; --muted:#5A6B70; --line:#D5DEDC;
+  --sea:#0D6468; --sea-soft:#DCEBEA; --brass:#9A6B1F; --warn:#9B3B22; --warn-soft:#F6E4DD;
+  --tile-a:#1C3A44; --tile-b:#2E5A52; --tile-c:#5B4A32;
+  --display:"Prata", Georgia, "Times New Roman", serif;
+  --body:"Commissioner", "Segoe UI", system-ui, sans-serif;
+  --mono:"IBM Plex Mono", ui-monospace, Menlo, monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E1A1F; --surface:#15252C; --ink:#E6EEEC; --muted:#9AAEB0; --line:#27393F;
+  --sea:#5FB8B4; --sea-soft:#163A3B; --brass:#D9A85A; --warn:#E58A6C; --warn-soft:#3A2119;
+  --tile-a:#1E4250; --tile-b:#2C5E55; --tile-c:#5E4C33; color-scheme:dark}}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5}
+.wrap{max-width:560px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-top:calc(20px + env(safe-area-inset-top,0px));padding-bottom:120px}
+header{display:grid;gap:6px;padding-block:8px 18px}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--sea)}
+h1{font-family:var(--display);font-weight:400;font-size:30px;line-height:1.15;margin:0;text-wrap:balance}
+.lede{color:var(--muted);margin:0;max-width:60ch}
+.chips{display:flex;gap:8px;overflow-x:auto;padding-block:4px 14px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:500 14px var(--body);padding:8px 14px;border-radius:999px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip:focus-visible,.card:focus-visible,.btn:focus-visible,.back:focus-visible{outline:2px solid var(--sea);outline-offset:2px}
+.count{font-size:13px;color:var(--muted);margin:0 0 10px}
+.list{display:grid;gap:14px}
+.card{display:grid;grid-template-columns:104px 1fr;background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;cursor:pointer;text-align:left;color:inherit;font:inherit;padding:0;width:100%}
+.tile{position:relative;display:grid;place-items:center;color:#fff;min-height:132px;
+  background-image:linear-gradient(rgba(255,255,255,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.07) 1px,transparent 1px);
+  background-size:13px 13px}
+.tile.t-apt{background-color:var(--tile-a)} .tile.t-house{background-color:var(--tile-b)} .tile.t-old{background-color:var(--tile-c)}
+.tile .no{font-family:var(--display);font-size:17px;line-height:1.2;text-align:center;padding:0 8px;text-wrap:balance}
+.tile .rooms{position:absolute;bottom:8px;left:0;right:0;text-align:center;font-size:11px;letter-spacing:.08em;text-transform:uppercase;opacity:.85}
+.cbody{padding:12px 14px;display:grid;gap:4px;min-width:0}
+.ctitle{font-weight:600;font-size:16px;line-height:1.3}
+.cplace{color:var(--muted);font-size:13.5px}
+.cmeta{font-family:var(--mono);font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.crow{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-top:4px}
+.price{font-weight:700;color:var(--brass);font-variant-numeric:tabular-nums}
+.price.ask{font-weight:500;color:var(--muted);font-size:13.5px}
+.pill{font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:999px;background:var(--sea-soft);color:var(--sea);white-space:nowrap}
+.pill.repair{background:var(--warn-soft);color:var(--warn)}
+.pill.new{background:transparent;border:1px solid var(--sea)}
+.detail{display:grid;gap:18px}
+.back{justify-self:start;background:none;border:0;color:var(--sea);font:600 15px var(--body);padding:6px 0;cursor:pointer}
+.hero{border-radius:16px;min-height:170px}
+.hero .no{font-size:30px}
+.dhead{display:grid;gap:6px}
+.dhead h2{font-family:var(--display);font-weight:400;font-size:26px;line-height:1.2;margin:0;text-wrap:balance}
+.dprice{font-size:22px;font-weight:700;color:var(--brass);font-variant-numeric:tabular-nums}
+.dprice.ask{font-size:17px;color:var(--muted);font-weight:500}
+.note{background:var(--warn-soft);color:var(--ink);border-radius:12px;padding:12px 14px;font-size:14px}
+.note b{color:var(--warn)}
+.facts{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:0}
+.fact{background:var(--surface);padding:10px 12px;min-width:0}
+.fact dt{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.fact dd{margin:2px 0 0;font-weight:600;font-variant-numeric:tabular-nums}
+h3{font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 8px;font-weight:600}
+ul.pts{margin:0;padding-left:18px;display:grid;gap:6px}
+.btn{display:inline-flex;align-items:center;gap:6px;border-radius:10px;padding:11px 16px;font:600 15px var(--body);border:1px solid var(--line);background:var(--surface);color:var(--ink);text-decoration:none;cursor:pointer}
+.btn.primary{background:var(--sea);color:var(--bg);border-color:var(--sea)}
+.bar{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);
+  padding:10px max(16px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));z-index:5}
+.bar-in{max-width:560px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.who{display:grid;line-height:1.25;min-width:0}
+.who b{font-size:14.5px}
+.who span{font-family:var(--mono);font-size:13px;color:var(--muted);user-select:all}
+.acts{display:flex;gap:8px}
+.acts .btn{padding:9px 13px;font-size:14px}
+footer{color:var(--muted);font-size:12.5px;margin-top:28px}
+@media (prefers-reduced-motion:no-preference){.card{transition:transform .15s}.card:active{transform:scale(.99)}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <main id="app"></main>
+  <footer>Цените са по обявите в era.bg към <span id="checked">05.11.2026</span> и се проверяват два пъти седмично. Всеки клиент на ЕРА получава безплатна кредитна консултация.</footer>
+</div>
+
+<div class="bar">
+  <div class="bar-in">
+    <div class="who"><b>Ник Капитанов · ЕРА Вива</b><span id="phone">0878 760 894</span></div>
+    <div class="acts">
+      <a class="btn primary" href="tel:+359878760894">Обади се</a>
+      <button class="btn" id="copy" type="button">Копирай</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const P=[
+ {id:"p006",no:"006",short:"Център",kind:"apt",type:"Двустаен апартамент",rooms:"2 стаи",place:"Център · бул. Осми приморски полк",area:"60,18 м²",price:"290 000 €",priceNote:"4 819 €/м²",status:"ready",
+  facts:[["Площ по НА","60,18 м²"],["Етаж","3 от 4, над магазини"],["Изложение","Юг"],["Строителство","Тухла"],["Асансьор","Няма"],["Обзавеждане","Остава"],["Изба","14,68 м²"],["Построен","1980"]],
+  pts:["Цялостен ремонт и обзавеждане в много добро състояние, не изисква вложения","Свободен веднага, без наемател","Дневна с трапезария и кухня, спалня, отделна гардеробна, баня с WC","До паркинга на Общината, в самия център","Ключ в агенцията, оглед по всяко време"],
+  note:"Реалната площ е около 70 м², защото терасата е присъединена към дневната. Присъединяването не е узаконено.",link:"https://www.era.bg/imoti/oferta/dvustaen-apartament-za-prodazhba-v-tsentar-varna-0223037"},
+ {id:"p008",no:"008",short:"Чайка",kind:"apt",type:"Двустаен, ново строителство",rooms:"2 стаи",place:"Чайка · до ДКЦ Чайка",area:"55 м²",price:"159 000 €",priceNote:"2 891 €/м²",status:"new",
+  facts:[["Застроена","47,01 м²"],["С общите части","55 м²"],["Етаж","2 от 17"],["Изложение","Запад"],["Асансьори","3"],["Завършване","2027"],["Състояние","БДС"],["Паркомясто","Възможно, подземно"]],
+  pts:["На 3 минути пеша от Морската градина и Делфинариума","Дневна с кухня 16,3 м², спалня 10,5 м², тераса 5,8 м²","Сграда с фасада от естествен камък, 2 стълбища и 3 асансьора"],
+  note:"Обектът е със статут на офис. Преди решение проверете с мен условията за банков кредит и адресна регистрация.",link:"https://www.era.bg/imoti/oferta/dvustaen-apartament-za-prodazhba-v-kv-chayka-varna-v5802385/galeriya"},
+ {id:"p007",no:"007",short:"Левски",kind:"apt",type:"Тристаен с морска гледка",rooms:"3 стаи",place:"Левски · до МБАЛ „Св. Марина“",area:"107 м²",price:"228 000 €",priceNote:"2 131 €/м²",status:"new",
+  facts:[["Застроена","92,3 м²"],["С общите части","107 м²"],["Етаж","3 от 9"],["Изложение","Юг-югоизток"],["Бани","2"],["Асансьор","Да"],["Етап","След Акт 14"],["Завършване","2027"]],
+  pts:["Гледка към морето и града от дневната","Две спални, две бани, склад 2,1 м², тераса 5,2 м²","Възможност за паркомясто в подземен гараж","Близо до университетите и болницата, удобно и за отдаване"],
+  note:null,link:"https://www.era.bg/imoti/oferta/tristaen-apartament-za-prodazhba-v-gr-varna-oblast-varna-v5802367/galeriya"},
+ {id:"p009",no:"009",short:"Сотира",kind:"house",type:"Двуетажна къща, ново строителство",rooms:"3 спални",place:"м-т Сотира",area:"120 м²",price:"269 000 €",priceNote:"2 242 €/м²",status:"new",
+  facts:[["РЗП","120 м²"],["Двор","70 м²"],["Етажи","2"],["Спални","3"],["Паркоместа","2"],["Състояние","БДС"]],
+  pts:["Долу: дневна с кухненски бокс и санитарен възел; горе: три спални и баня","Балкон към родителската спалня","Тухли Поротерм, 10 см изолация на покрива, 6-камерна дограма","Асфалтов път, спирка и магазини на пешеходно разстояние"],
+  note:null,link:"https://www.era.bg/imoti/oferta/kashta-za-prodazhba-v-m-t-sotira-varna-v1009715/galeriya"},
+ {id:"p001",no:"001",short:"Млада гвардия",kind:"old",type:"Къща с голям двор",rooms:"Парцел 2 300 м²",place:"с. Млада гвардия, общ. Ветрино",area:"150 м²",price:"66 000 €",priceNote:"440 €/м²",status:"repair",
+  facts:[["Къща","100 м²"],["Лятна кухня","50 м²"],["Парцел","2 300 м²"],["Изба","40 м²"],["Строителство","Тухла"],["До Варна","около 50 км"]],
+  pts:["Ъглов парцел с лице към две улици, асфалтов достъп","Масивна къща, навес около 100 м², два кладенеца и резервоар 30 м³","Около 2 км до АМ „Хемус“","Място за градина, басейн или собствено стопанство"],
+  note:"Къщата се нуждае от основен ремонт: покрив и подове.",link:"https://www.era.bg/imoti/oferta/kashta-za-prodazhba-v-s-mlada-gvardiya-oblast-varna-v5802942"}
+];
+const STATUS={ready:["Готов за живеене",""],new:["Ново строителство","new"],repair:["За ремонт","repair"]};
+const FILTERS=[["all","Всички"],["apt","Апартаменти"],["house","Къщи"],["ready","Готови за живеене"],["new","Ново строителство"],["repair","За ремонт"]];
+let filter="all";
+try{filter=localStorage.getItem("zh-filter")||"all"}catch(e){}
+const app=document.getElementById("app");
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const isHouse=p=>/къща/i.test(p.type);
+const match=p=>filter==="all"||(filter==="apt"&&!isHouse(p))||(filter==="house"&&isHouse(p))||p.status===filter;
+const tileClass=p=>p.kind==="house"?"t-house":p.kind==="old"?"t-old":"t-apt";
+const priceHtml=(p,cls)=>p.price?`<span class="${cls}">${esc(p.price)}</span>`:`<span class="${cls} ask">Цена при запитване</span>`;
+function list(){
+  const items=P.filter(match);
+  app.innerHTML=`<header><span class="eyebrow">Варна и региона · ${P.length} имота</span><h1>Жилища за вас и семейството</h1><p class="lede">Подбрани имоти за собствен дом или за отдаване под наем. Докоснете имот за подробности.</p></header>
+  <div class="chips" role="group" aria-label="Филтър">${FILTERS.map(([k,l])=>`<button class="chip" type="button" data-f="${k}" aria-pressed="${k===filter}">${l}</button>`).join("")}</div>
+  <p class="count">${items.length===P.length?"Показани всички":"Показани "+items.length+" от "+P.length}</p>
+  <div class="list">${items.map(p=>{const s=STATUS[p.status];return `<button class="card" type="button" data-id="${p.id}">
+    <div class="tile ${tileClass(p)}"><span class="no">${esc(p.short)}</span><span class="rooms">№ ${p.no}</span></div>
+    <div class="cbody"><span class="ctitle">${esc(p.type)}</span><span class="cplace">${esc(p.place)}</span><span class="cmeta">${esc(p.area)}</span>
+    <div class="crow">${priceHtml(p,"price")}<span class="pill ${s[1]}">${s[0]}</span></div></div></button>`}).join("")||'<p class="count">Няма имоти в този филтър.</p>'}</div>`;
+  app.querySelectorAll(".chip").forEach(b=>b.onclick=()=>{filter=b.dataset.f;try{localStorage.setItem("zh-filter",filter)}catch(e){}list()});
+  app.querySelectorAll(".card").forEach(c=>c.onclick=()=>{location.hash=c.dataset.id});
+}
+function detail(p){
+  const s=STATUS[p.status];
+  app.innerHTML=`<article class="detail"><button class="back" type="button" id="back">‹ Всички имоти</button>
+  <div class="tile hero ${tileClass(p)}"><span class="no">${esc(p.short)}</span><span class="rooms">${esc(p.rooms)} · № ${p.no}</span></div>
+  <div class="dhead"><span class="pill ${s[1]}" style="justify-self:start">${s[0]}</span><h2>${esc(p.type)}</h2><span class="cplace">${esc(p.place)}</span>
+  ${priceHtml(p,"dprice")}${p.priceNote?`<span class="cmeta">${esc(p.priceNote)}</span>`:""}</div>
+  ${p.note?`<div class="note"><b>Важно:</b> ${esc(p.note)}</div>`:""}
+  <dl class="facts">${p.facts.map(([k,v])=>`<div class="fact"><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>
+  <section><h3>Какво получавате</h3><ul class="pts">${p.pts.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></section>
+  ${p.link?`<a class="btn" href="${p.link}" target="_blank" rel="noopener">Снимки и обява в era.bg ↗</a>`:`<p class="count">Снимки и оглед: обадете се на номера по-долу.</p>`}
+  </article>`;
+  document.getElementById("back").onclick=()=>{history.length>1&&location.hash?(location.hash=""):list()};
+  window.scrollTo(0,0);
+}
+function route(){const p=P.find(x=>x.id===location.hash.slice(1));p?detail(p):list()}
+window.addEventListener("hashchange",route);route();
+document.getElementById("copy").onclick=async()=>{const b=document.getElementById("copy");try{await navigator.clipboard.writeText("0878760894");b.textContent="Копирано"}catch(e){const r=document.createRange();r.selectNodeContents(document.getElementById("phone"));const sel=getSelection();sel.removeAllRanges();sel.addRange(r);b.textContent="Избрано"}setTimeout(()=>b.textContent="Копирай",1600)};
+</script>
+</body>
+</html>
