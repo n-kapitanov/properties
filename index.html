@@ -135,7 +135,7 @@ const P=[
   note:"Къщата се нуждае от основен ремонт: покрив и подове."}
 ];
 const STATUS={ready:["Готов за живеене",""],new:["Ново строителство","new"],repair:["За ремонт","repair"]};
-const FILTERS=[["all","Всички"],["apt","Апартаменти"],["house","Къщи"],["ready","Готови за живеене"],["new","Ново строителство"],["repair","За ремонт"]];
+const FILTERS=[["all","Всички"],["apt","Апартаменти"],["house","Къщи"],["ready","Готови за живеене"],["new","Ново строителство"]];
 let filter="all";
 try{filter=localStorage.getItem("zh-filter")||"all"}catch(e){}
 const app=document.getElementById("app");
