@@ -60,6 +60,7 @@ h1{font-family:var(--display);font-weight:400;font-size:30px;line-height:1.15;ma
 .crow{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-top:4px}
 .price{font-weight:700;color:var(--brass);font-variant-numeric:tabular-nums}
 .price.ask{font-weight:500;color:var(--muted);font-size:13.5px}
+.pills{display:flex;gap:6px;flex-wrap:wrap}
 .pill{font-size:11.5px;font-weight:600;padding:2px 8px;border-radius:999px;background:transparent;border:1px solid var(--sea);color:var(--ink);white-space:nowrap}
 .pill.repair{background:var(--warn-soft);color:var(--warn)}
 .pill.new{}
@@ -117,15 +118,15 @@ const P=[
   facts:[["Площ по НА","60,18 м²"],["Етаж","3 от 4, над магазини"],["Изложение","Юг"],["Строителство","Тухла"],["Асансьор","Няма"],["Обзавеждане","Остава"],["Изба","14,68 м²"]],
   pts:["Цялостен ремонт и обзавеждане в много добро състояние, не изисква вложения","Свободен веднага, без наемател","Дневна с трапезария и кухня, спалня, отделна гардеробна, баня с WC","До паркинга на Общината, в самия център","Ключ в агенцията, оглед по всяко време"],
   note:"Реалната площ е около 70 м², защото терасата е присъединена към дневната. Присъединяването не е узаконено."},
- {id:"p008",no:"008",photos:6,short:"Чайка",kind:"apt",type:"Двустаен, ново строителство",rooms:"2 стаи",place:"Чайка · до ДКЦ Чайка",area:"55 м²",price:"159 000 €",priceNote:"2 891 €/м²",status:"new",
+ {id:"p008",no:"008",finish:"БДС",photos:6,short:"Чайка",kind:"apt",type:"Двустаен, ново строителство",rooms:"2 стаи",place:"Чайка · до ДКЦ Чайка",area:"55 м²",price:"159 000 €",priceNote:"2 891 €/м²",status:"new",
   facts:[["Застроена","47,01 м²"],["С общите части","55 м²"],["Етаж","2 от 17"],["Изложение","Запад"],["Асансьори","3"],["Завършване","2027"],["Състояние","БДС"],["Паркомясто","Възможно, подземно"]],
   pts:["На 3 минути пеша от Морската градина и Делфинариума","Дневна с кухня 16,3 м², спалня 10,5 м², тераса 5,8 м²","Сграда с фасада от естествен камък, 2 стълбища и 3 асансьора"],
   note:"Обектът е със статут на офис. Преди решение проверете с мен условията за банков кредит и адресна регистрация."},
- {id:"p007",no:"007",photos:6,short:"Левски",kind:"apt",type:"Тристаен с морска гледка",rooms:"3 стаи",place:"Левски · до МБАЛ „Св. Марина“",area:"107 м²",price:"228 000 €",priceNote:"2 131 €/м²",status:"new",
+ {id:"p007",no:"007",finish:"БДС",photos:6,short:"Левски",kind:"apt",type:"Тристаен с морска гледка",rooms:"3 стаи",place:"Левски · до МБАЛ „Св. Марина“",area:"107 м²",price:"228 000 €",priceNote:"2 131 €/м²",status:"new",
   facts:[["Застроена","92,3 м²"],["С общите части","107 м²"],["Етаж","3 от 9"],["Изложение","Юг-югоизток"],["Бани","2"],["Асансьор","Да"],["Етап","След Акт 14"],["Завършване","2027"]],
   pts:["Гледка към морето и града от дневната","Две спални, две бани, склад 2,1 м², тераса 5,2 м²","Възможност за паркомясто в подземен гараж","Близо до университетите и болницата, удобно и за отдаване"],
   note:null},
- {id:"p009",no:"009",other:true,photos:6,short:"Сотира",kind:"house",type:"Двуетажна къща, ново строителство",rooms:"3 спални",place:"м-т Сотира",area:"120 м²",price:"269 000 €",priceNote:"2 242 €/м²",status:"new",
+ {id:"p009",no:"009",finish:"БДС",other:true,photos:6,short:"Сотира",kind:"house",type:"Двуетажна къща, ново строителство",rooms:"3 спални",place:"м-т Сотира",area:"120 м²",price:"269 000 €",priceNote:"2 242 €/м²",status:"new",
   facts:[["РЗП","120 м²"],["Двор","70 м²"],["Етажи","2"],["Спални","3"],["Паркоместа","2"],["Състояние","БДС"]],
   pts:["Долу: дневна с кухненски бокс и санитарен възел; горе: три спални и баня","Балкон към родителската спалня","Тухли Поротерм, 10 см изолация на покрива, 6-камерна дограма","Асфалтов път, спирка и магазини на пешеходно разстояние"],
   note:null},
@@ -146,6 +147,7 @@ const tileClass=p=>p.kind==="house"?"t-house":p.kind==="old"?"t-old":"t-apt";
 const img=(p,i)=>`images/${p.no}/${String(i).padStart(2,"0")}.jpg`;
 const tileStyle=p=>p.photos?` photo" style="background-image:url('${img(p,1)}')`:"";
 const title=p=>esc(p.type)+(p.other?" *":"");
+const pills=p=>{const s=STATUS[p.status];return `<span class="pills"><span class="pill ${s[1]}">${s[0]}</span>${p.finish?`<span class="pill">${esc(p.finish)}</span>`:""}</span>`};
 const priceHtml=(p,cls)=>p.price?`<span class="${cls}">${esc(p.price)}</span>`:`<span class="${cls} ask">Цена при запитване</span>`;
 function list(){
   const items=P.filter(match);
@@ -155,7 +157,7 @@ function list(){
   <div class="list">${items.map(p=>{const s=STATUS[p.status];return `<button class="card" type="button" data-id="${p.id}">
     <div class="tile ${tileClass(p)}${tileStyle(p)}"><span class="no">${esc(p.short)}</span><span class="rooms">№ ${p.no}</span></div>
     <div class="cbody"><span class="ctitle">${title(p)}</span><span class="cplace">${esc(p.place)}</span><span class="cmeta">${esc(p.area)}</span>
-    <div class="crow">${priceHtml(p,"price")}<span class="pill ${s[1]}">${s[0]}</span></div></div></button>`}).join("")||'<p class="count">Няма имоти в този филтър.</p>'}</div>`;
+    <div class="crow">${priceHtml(p,"price")}${pills(p)}</div></div></button>`}).join("")||'<p class="count">Няма имоти в този филтър.</p>'}</div>`;
   app.querySelectorAll(".chip").forEach(b=>b.onclick=()=>{const x=app.querySelector(".chips").scrollLeft;filter=b.dataset.f;try{localStorage.setItem("zh-filter",filter)}catch(e){}list();app.querySelector(".chips").scrollLeft=x});
   app.querySelectorAll(".card").forEach(c=>c.onclick=()=>{location.hash=c.dataset.id});
 }
@@ -163,7 +165,7 @@ function detail(p){
   const s=STATUS[p.status];
   app.innerHTML=`<article class="detail"><button class="back" type="button" id="back">‹ Всички имоти</button>
   ${p.photos?`<div class="gwrap"><button class="garrow prev" type="button" aria-label="Предишна снимка">‹</button><button class="garrow next" type="button" aria-label="Следваща снимка">›</button><div class="gallery" aria-label="Снимки">${Array.from({length:p.photos},(_,i)=>`<img src="${img(p,i+1)}" alt="${esc(p.type)}, снимка ${i+1}" loading="${i?"lazy":"eager"}">`).join("")}</div></div><p class="gcount">${p.photos} снимки</p>`:`<div class="tile hero ${tileClass(p)}"><span class="no">${esc(p.short)}</span><span class="rooms">${esc(p.rooms)} · № ${p.no}</span></div>`}
-  <div class="dhead"><span class="pill ${s[1]}" style="justify-self:start">${s[0]}</span><h2>${title(p)}</h2><span class="cplace">${esc(p.place)}</span>
+  <div class="dhead"><span style="justify-self:start">${pills(p)}</span><h2>${title(p)}</h2><span class="cplace">${esc(p.place)}</span>
   ${priceHtml(p,"dprice")}${p.priceNote?`<span class="cmeta">${esc(p.priceNote)}</span>`:""}</div>
   ${p.note?`<div class="note"><b>Важно:</b> ${esc(p.note)}</div>`:""}
   <dl class="facts">${p.facts.map(([k,v])=>`<div class="fact"><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>
