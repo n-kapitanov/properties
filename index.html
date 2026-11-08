@@ -49,6 +49,10 @@ h1{font-family:var(--display);font-weight:400;font-size:30px;line-height:1.15;ma
 .gallery{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;border-radius:16px;scrollbar-width:none;margin:0 -2px}
 .gallery::-webkit-scrollbar{display:none}
 .gallery img{flex:none;width:100%;aspect-ratio:3/2;object-fit:cover;scroll-snap-align:center;border-radius:16px;background:var(--line)}
+.gwrap{position:relative}
+.garrow{position:absolute;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;border:0;background:rgba(255,255,255,.85);color:#12232C;font:600 20px/1 var(--body);display:grid;place-items:center;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.25);z-index:2}
+.garrow:disabled{opacity:0;pointer-events:none}
+.garrow.prev{left:8px}.garrow.next{right:8px}
 .gcount{font-size:12.5px;color:var(--muted);margin-top:-10px}
 .tile .no{font-family:var(--display);font-size:17px;line-height:1.2;text-align:center;padding:0 8px;text-wrap:balance}
 .tile .rooms{position:absolute;bottom:8px;left:0;right:0;text-align:center;font-size:11px;letter-spacing:.08em;text-transform:uppercase;opacity:.85}
@@ -79,6 +83,7 @@ h1{font-family:var(--display);font-weight:400;font-size:30px;line-height:1.15;ma
 h3{font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 8px;font-weight:600}
 ul.pts{margin:0;padding-left:18px;display:grid;gap:6px}
 .btn{display:inline-flex;align-items:center;gap:6px;border-radius:10px;padding:11px 16px;font:600 15px var(--body);border:1px solid var(--line);background:var(--surface);color:var(--ink);text-decoration:none;cursor:pointer}
+.btn.viber{background:#7360F2;color:#fff;border-color:#7360F2}
 .btn.primary{background:var(--sea);color:var(--bg);border-color:var(--sea)}
 .bar{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);
   padding:10px max(16px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));z-index:5}
@@ -96,7 +101,7 @@ footer{color:var(--muted);font-size:12.5px;margin-top:28px}
 
 <div class="wrap">
   <main id="app"></main>
-  <footer>Цените са по обявите в era.bg към <span id="checked">05.11.2026</span> и се проверяват два пъти седмично. Всеки клиент на ЕРА получава безплатна кредитна консултация.</footer>
+  <footer>Цените са проверени на <span id="checked">05.11.2026</span> и се проверяват два пъти седмично. Всеки клиент на ЕРА получава безплатна кредитна консултация.</footer>
 </div>
 
 <div class="bar">
@@ -104,33 +109,33 @@ footer{color:var(--muted);font-size:12.5px;margin-top:28px}
     <div class="who"><b>Ник Капитанов · ЕРА Вива</b><span id="phone">0878 760 894</span></div>
     <div class="acts">
       <a class="btn primary" href="tel:+359878760894">Обади се</a>
-      <a class="btn" href="viber://chat?number=%2B359878760894">Viber</a>
+      <a class="btn viber" href="viber://chat?number=%2B359878760894">Viber</a>
     </div>
   </div>
 </div>
 
 <script>
 const P=[
- {id:"p006",no:"006",photos:6,short:"Център",kind:"apt",type:"Двустаен апартамент",rooms:"2 стаи",place:"Център · бул. Осми приморски полк",area:"60,18 м²",price:"290 000 €",priceNote:"4 819 €/м²",status:"ready",
+ {id:"p006",no:"006",other:true,photos:6,short:"Център",kind:"apt",type:"Двустаен апартамент",rooms:"2 стаи",place:"Център · бул. Осми приморски полк",area:"60,18 м²",price:"290 000 €",priceNote:"4 819 €/м²",status:"ready",
   facts:[["Площ по НА","60,18 м²"],["Етаж","3 от 4, над магазини"],["Изложение","Юг"],["Строителство","Тухла"],["Асансьор","Няма"],["Обзавеждане","Остава"],["Изба","14,68 м²"],["Построен","1980"]],
   pts:["Цялостен ремонт и обзавеждане в много добро състояние, не изисква вложения","Свободен веднага, без наемател","Дневна с трапезария и кухня, спалня, отделна гардеробна, баня с WC","До паркинга на Общината, в самия център","Ключ в агенцията, оглед по всяко време"],
-  note:"Реалната площ е около 70 м², защото терасата е присъединена към дневната. Присъединяването не е узаконено.",link:"https://www.era.bg/imoti/oferta/dvustaen-apartament-za-prodazhba-v-tsentar-varna-0223037"},
+  note:"Реалната площ е около 70 м², защото терасата е присъединена към дневната. Присъединяването не е узаконено."},
  {id:"p008",no:"008",photos:6,short:"Чайка",kind:"apt",type:"Двустаен, ново строителство",rooms:"2 стаи",place:"Чайка · до ДКЦ Чайка",area:"55 м²",price:"159 000 €",priceNote:"2 891 €/м²",status:"new",
   facts:[["Застроена","47,01 м²"],["С общите части","55 м²"],["Етаж","2 от 17"],["Изложение","Запад"],["Асансьори","3"],["Завършване","2027"],["Състояние","БДС"],["Паркомясто","Възможно, подземно"]],
   pts:["На 3 минути пеша от Морската градина и Делфинариума","Дневна с кухня 16,3 м², спалня 10,5 м², тераса 5,8 м²","Сграда с фасада от естествен камък, 2 стълбища и 3 асансьора"],
-  note:"Обектът е със статут на офис. Преди решение проверете с мен условията за банков кредит и адресна регистрация.",link:"https://www.era.bg/imoti/oferta/dvustaen-apartament-za-prodazhba-v-kv-chayka-varna-v5802385/galeriya"},
+  note:"Обектът е със статут на офис. Преди решение проверете с мен условията за банков кредит и адресна регистрация."},
  {id:"p007",no:"007",photos:6,short:"Левски",kind:"apt",type:"Тристаен с морска гледка",rooms:"3 стаи",place:"Левски · до МБАЛ „Св. Марина“",area:"107 м²",price:"228 000 €",priceNote:"2 131 €/м²",status:"new",
   facts:[["Застроена","92,3 м²"],["С общите части","107 м²"],["Етаж","3 от 9"],["Изложение","Юг-югоизток"],["Бани","2"],["Асансьор","Да"],["Етап","След Акт 14"],["Завършване","2027"]],
   pts:["Гледка към морето и града от дневната","Две спални, две бани, склад 2,1 м², тераса 5,2 м²","Възможност за паркомясто в подземен гараж","Близо до университетите и болницата, удобно и за отдаване"],
-  note:null,link:"https://www.era.bg/imoti/oferta/tristaen-apartament-za-prodazhba-v-gr-varna-oblast-varna-v5802367/galeriya"},
- {id:"p009",no:"009",photos:6,short:"Сотира",kind:"house",type:"Двуетажна къща, ново строителство",rooms:"3 спални",place:"м-т Сотира",area:"120 м²",price:"269 000 €",priceNote:"2 242 €/м²",status:"new",
+  note:null},
+ {id:"p009",no:"009",other:true,photos:6,short:"Сотира",kind:"house",type:"Двуетажна къща, ново строителство",rooms:"3 спални",place:"м-т Сотира",area:"120 м²",price:"269 000 €",priceNote:"2 242 €/м²",status:"new",
   facts:[["РЗП","120 м²"],["Двор","70 м²"],["Етажи","2"],["Спални","3"],["Паркоместа","2"],["Състояние","БДС"]],
   pts:["Долу: дневна с кухненски бокс и санитарен възел; горе: три спални и баня","Балкон към родителската спалня","Тухли Поротерм, 10 см изолация на покрива, 6-камерна дограма","Асфалтов път, спирка и магазини на пешеходно разстояние"],
-  note:null,link:"https://www.era.bg/imoti/oferta/kashta-za-prodazhba-v-m-t-sotira-varna-v1009715/galeriya"},
+  note:null},
  {id:"p001",no:"001",photos:3,short:"Млада гвардия",kind:"old",type:"Къща с голям двор",rooms:"Парцел 2 300 м²",place:"с. Млада гвардия, общ. Ветрино",area:"150 м²",price:"66 000 €",priceNote:"440 €/м²",status:"repair",
   facts:[["Къща","100 м²"],["Лятна кухня","50 м²"],["Парцел","2 300 м²"],["Изба","40 м²"],["Строителство","Тухла"],["До Варна","около 50 км"]],
   pts:["Ъглов парцел с лице към две улици, асфалтов достъп","Масивна къща, навес около 100 м², два кладенеца и резервоар 30 м³","Около 2 км до АМ „Хемус“","Място за градина, басейн или собствено стопанство"],
-  note:"Къщата се нуждае от основен ремонт: покрив и подове.",link:"https://www.era.bg/imoti/oferta/kashta-za-prodazhba-v-s-mlada-gvardiya-oblast-varna-v5802942"}
+  note:"Къщата се нуждае от основен ремонт: покрив и подове."}
 ];
 const STATUS={ready:["Готов за живеене",""],new:["Ново строителство","new"],repair:["За ремонт","repair"]};
 const FILTERS=[["all","Всички"],["apt","Апартаменти"],["house","Къщи"],["ready","Готови за живеене"],["new","Ново строителство"],["repair","За ремонт"]];
@@ -143,6 +148,7 @@ const match=p=>filter==="all"||(filter==="apt"&&!isHouse(p))||(filter==="house"&
 const tileClass=p=>p.kind==="house"?"t-house":p.kind==="old"?"t-old":"t-apt";
 const img=(p,i)=>`images/${p.no}/${String(i).padStart(2,"0")}.jpg`;
 const tileStyle=p=>p.photos?` photo" style="background-image:url('${img(p,1)}')`:"";
+const title=p=>esc(p.type)+(p.other?" *":"");
 const priceHtml=(p,cls)=>p.price?`<span class="${cls}">${esc(p.price)}</span>`:`<span class="${cls} ask">Цена при запитване</span>`;
 function list(){
   const items=P.filter(match);
@@ -151,7 +157,7 @@ function list(){
   <p class="count">${items.length===P.length?"Показани всички":"Показани "+items.length+" от "+P.length}</p>
   <div class="list">${items.map(p=>{const s=STATUS[p.status];return `<button class="card" type="button" data-id="${p.id}">
     <div class="tile ${tileClass(p)}${tileStyle(p)}"><span class="no">${esc(p.short)}</span><span class="rooms">№ ${p.no}</span></div>
-    <div class="cbody"><span class="ctitle">${esc(p.type)}</span><span class="cplace">${esc(p.place)}</span><span class="cmeta">${esc(p.area)}</span>
+    <div class="cbody"><span class="ctitle">${title(p)}</span><span class="cplace">${esc(p.place)}</span><span class="cmeta">${esc(p.area)}</span>
     <div class="crow">${priceHtml(p,"price")}<span class="pill ${s[1]}">${s[0]}</span></div></div></button>`}).join("")||'<p class="count">Няма имоти в този филтър.</p>'}</div>`;
   app.querySelectorAll(".chip").forEach(b=>b.onclick=()=>{filter=b.dataset.f;try{localStorage.setItem("zh-filter",filter)}catch(e){}list()});
   app.querySelectorAll(".card").forEach(c=>c.onclick=()=>{location.hash=c.dataset.id});
@@ -159,16 +165,22 @@ function list(){
 function detail(p){
   const s=STATUS[p.status];
   app.innerHTML=`<article class="detail"><button class="back" type="button" id="back">‹ Всички имоти</button>
-  ${p.photos?`<div class="gallery" aria-label="Снимки">${Array.from({length:p.photos},(_,i)=>`<img src="${img(p,i+1)}" alt="${esc(p.type)}, снимка ${i+1}" loading="${i?"lazy":"eager"}">`).join("")}</div><p class="gcount">${p.photos} снимки · плъзнете настрани</p>`:`<div class="tile hero ${tileClass(p)}"><span class="no">${esc(p.short)}</span><span class="rooms">${esc(p.rooms)} · № ${p.no}</span></div>`}
-  <div class="dhead"><span class="pill ${s[1]}" style="justify-self:start">${s[0]}</span><h2>${esc(p.type)}</h2><span class="cplace">${esc(p.place)}</span>
+  ${p.photos?`<div class="gwrap"><button class="garrow prev" type="button" aria-label="Предишна снимка">‹</button><button class="garrow next" type="button" aria-label="Следваща снимка">›</button><div class="gallery" aria-label="Снимки">${Array.from({length:p.photos},(_,i)=>`<img src="${img(p,i+1)}" alt="${esc(p.type)}, снимка ${i+1}" loading="${i?"lazy":"eager"}">`).join("")}</div></div><p class="gcount">${p.photos} снимки</p>`:`<div class="tile hero ${tileClass(p)}"><span class="no">${esc(p.short)}</span><span class="rooms">${esc(p.rooms)} · № ${p.no}</span></div>`}
+  <div class="dhead"><span class="pill ${s[1]}" style="justify-self:start">${s[0]}</span><h2>${title(p)}</h2><span class="cplace">${esc(p.place)}</span>
   ${priceHtml(p,"dprice")}${p.priceNote?`<span class="cmeta">${esc(p.priceNote)}</span>`:""}</div>
   ${p.note?`<div class="note"><b>Важно:</b> ${esc(p.note)}</div>`:""}
   <dl class="facts">${p.facts.map(([k,v])=>`<div class="fact"><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>
   <section><h3>Какво получавате</h3><ul class="pts">${p.pts.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></section>
-  ${p.link?`<a class="btn" href="${p.link}" target="_blank" rel="noopener">Всички снимки и обявата в era.bg ↗</a>`:`<p class="count">Снимки и оглед: обадете се на номера по-долу.</p>`}
+  <p class="count">Още снимки и оглед: обадете се или пишете във Viber.</p>
   </article>`;
   document.getElementById("back").onclick=()=>{history.length>1&&location.hash?(location.hash=""):list()};
   window.scrollTo(0,0);
+  const g=app.querySelector(".gallery");
+  if(g){const pr=app.querySelector(".garrow.prev"),nx=app.querySelector(".garrow.next");
+    const upd=()=>{pr.disabled=g.scrollLeft<10;nx.disabled=g.scrollLeft+g.clientWidth>=g.scrollWidth-10};
+    pr.onclick=()=>g.scrollBy({left:-g.clientWidth,behavior:"smooth"});
+    nx.onclick=()=>g.scrollBy({left:g.clientWidth,behavior:"smooth"});
+    g.addEventListener("scroll",upd,{passive:true});upd();}
 }
 function route(){const p=P.find(x=>x.id===location.hash.slice(1));p?detail(p):list()}
 window.addEventListener("hashchange",route);route();
