@@ -139,7 +139,7 @@ const P=[
  {id:"p008",no:"008",finish:"БДС",photos:6,short:"Чайка",kind:"apt",type:"Двустаен, ново строителство",rooms:"2 стаи",place:"Чайка · до ДКЦ Чайка",area:"55 м²",price:"159 000 €",priceNote:"2 891 €/м²",status:"new",
   facts:[["Дневна с кухня","16,3 м²"],["Спалня","10,5 м²"],["Баня","1, с тоалетна"],["Тераса","5,8 м²"],["Застроена","47,01 м²"],["С общите части","55 м²"],["Етаж","2 от 17"],["Изложение","Запад"],["Асансьори","3"],["Завършване","2027"],["Състояние","БДС"],["Паркомясто","Възможно, подземно"]],
   pts:["На 3 минути пеша от Морската градина и Делфинариума","Сграда с фасада от естествен камък, 2 стълбища и 3 асансьора"],
-  note:"Обектът е със статут на офис. Преди решение проверете с мен условията за банков кредит и адресна регистрация."},
+  note:"Обектът е със статут на офис. Преди решение провери с мен условията за банков кредит и адресна регистрация."},
  {id:"p007",no:"007",finish:"БДС",photos:6,short:"Левски",kind:"apt",type:"Тристаен с морска гледка",rooms:"3 стаи",place:"Левски · до МБАЛ „Св. Марина“",area:"107 м²",price:"228 000 €",priceNote:"2 131 €/м²",status:"new",
   facts:[["Дневна с кухня","25,3 м²"],["Спални","14,5 и 13,4 м²"],["Бани","2, всяка с тоалетна"],["Тераса","5,2 м²"],["Застроена","92,3 м²"],["С общите части","107 м²"],["Етаж","3 от 9"],["Изложение","Юг-югоизток"],["Асансьор","Да"],["Склад","2,1 м²"],["Етап","След Акт 14"],["Завършване","2027"]],
   pts:["Гледка към морето и града от дневната","Възможност за паркомясто в подземен гараж","Близо до университетите и болницата, удобно и за отдаване"],
@@ -169,7 +169,7 @@ const pills=p=>{const s=STATUS[p.status];return `<span class="pills"><span class
 const priceHtml=(p,cls)=>p.price?`<span class="${cls}">${esc(p.price)}</span>`:`<span class="${cls} ask">Цена при запитване</span>`;
 function list(){
   const items=P.filter(match);
-  app.innerHTML=`<header><img class="brand" src="brand/logo-small.png" alt="Ник Капитанов · имоти" width="132" height="76"><span class="eyebrow">Варна и региона · ${P.length} имота</span><h1>Открий своя дом</h1><p class="lede">Подбрани имоти за собствен дом или за отдаване под наем. Докоснете имот за подробности.</p></header>
+  app.innerHTML=`<header><img class="brand" src="brand/logo-small.png" alt="Ник Капитанов · имоти" width="132" height="76"><span class="eyebrow">Варна и региона · ${P.length} имота</span><h1>Открий своя дом</h1><p class="lede">Подбрани имоти за собствен дом или за отдаване под наем. Докосни имот за подробности.</p></header>
   <div class="chips" role="group" aria-label="Филтър">${FILTERS.map(([k,l])=>`<button class="chip" type="button" data-f="${k}" aria-pressed="${k===filter}">${l}</button>`).join("")}</div>
   <p class="count">${items.length===P.length?"Показани всички":"Показани "+items.length+" от "+P.length}</p>
   <div class="list">${items.map(p=>{const s=STATUS[p.status];return `<button class="card" type="button" data-id="${p.id}">
@@ -187,8 +187,8 @@ function detail(p){
   ${priceHtml(p,"dprice")}${p.priceNote?`<span class="cmeta">${esc(p.priceNote)}</span>`:""}</div>
   ${p.note?`<div class="note"><b>Важно:</b> ${esc(p.note)}</div>`:""}
   <dl class="facts">${p.facts.map(([k,v])=>`<div class="fact"><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>
-  <section><h3>Какво получавате</h3><ul class="pts">${p.pts.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></section>
-  <p class="count">Още снимки и оглед: обадете се или пишете във Viber.</p>
+  <section><h3>Какво получаваш</h3><ul class="pts">${p.pts.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></section>
+  <p class="count">Още снимки и оглед: обади се или пиши във Viber.</p>
   </article>`;
   document.getElementById("back").onclick=()=>{history.length>1&&location.hash?(location.hash=""):list()};
   window.scrollTo(0,0);
