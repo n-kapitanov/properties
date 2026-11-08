@@ -72,6 +72,15 @@ h1{font-family:var(--display);font-weight:400;font-size:30px;line-height:1.15;ma
 .garrow{position:absolute;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;border:0;background:rgba(255,255,255,.85);color:#12232C;font:600 20px/1 var(--body);display:grid;place-items:center;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.25);z-index:2}
 .garrow:disabled{opacity:0;pointer-events:none}
 .garrow.prev{left:8px}.garrow.next{right:8px}
+.gallery img{cursor:zoom-in}
+.lb{position:fixed;inset:0;background:#000;z-index:50;display:flex;flex-direction:column}
+.lb[hidden]{display:none}
+.lb-strip{flex:1;display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior:contain}
+.lb-strip::-webkit-scrollbar{display:none}
+.lb-strip img{flex:none;width:100%;height:100%;object-fit:contain;scroll-snap-align:center}
+.lb-top{position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:calc(10px + env(safe-area-inset-top,0px)) 14px 10px;color:#fff;font:600 15px var(--body);z-index:2;background:linear-gradient(rgba(0,0,0,.5),rgba(0,0,0,0))}
+.lb-close{width:40px;height:40px;border-radius:50%;border:0;background:rgba(255,255,255,.18);color:#fff;font:400 26px/1 var(--body);cursor:pointer}
+.lb .garrow{z-index:2}
 .gcount{font-size:12.5px;color:var(--muted);margin-top:-10px}
 .tile .no{font-family:var(--display);font-size:17px;line-height:1.2;text-align:center;padding:0 8px;text-wrap:balance}
 .tile .rooms{position:absolute;bottom:8px;left:0;right:0;text-align:center;font-size:11px;letter-spacing:.08em;text-transform:uppercase;opacity:.85}
@@ -135,6 +144,13 @@ footer{color:var(--muted);font-size:12.5px;margin-top:28px}
       <a class="btn viber" href="viber://chat?number=%2B359878760894">Viber</a>
     </div>
   </div>
+</div>
+
+<div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="Снимки на цял екран">
+  <div class="lb-top"><span id="lb-count"></span><button class="lb-close" id="lb-close" type="button" aria-label="Затвори">×</button></div>
+  <button class="garrow prev" id="lb-prev" type="button" aria-label="Предишна снимка">‹</button>
+  <button class="garrow next" id="lb-next" type="button" aria-label="Следваща снимка">›</button>
+  <div class="lb-strip" id="lb-strip"></div>
 </div>
 
 <script>
@@ -212,8 +228,27 @@ function detail(p){
     const upd=()=>{pr.disabled=g.scrollLeft<10;nx.disabled=g.scrollLeft+g.clientWidth>=g.scrollWidth-10};
     pr.onclick=()=>g.scrollBy({left:-g.clientWidth,behavior:"smooth"});
     nx.onclick=()=>g.scrollBy({left:g.clientWidth,behavior:"smooth"});
-    g.addEventListener("scroll",upd,{passive:true});upd();}
+    g.addEventListener("scroll",upd,{passive:true});upd();
+    g.querySelectorAll("img").forEach((im,i)=>im.onclick=()=>openLB(p,i));}
 }
+
+const lb=document.getElementById("lb"),lbs=document.getElementById("lb-strip"),lbc=document.getElementById("lb-count"),lbp=document.getElementById("lb-prev"),lbn=document.getElementById("lb-next");
+let lbOpen=false;
+function lbUpd(){const n=lbs.children.length,i=Math.round(lbs.scrollLeft/lbs.clientWidth);lbc.textContent=(i+1)+" / "+n;lbp.disabled=i<=0;lbn.disabled=i>=n-1}
+function openLB(p,start){
+  lbs.innerHTML=Array.from({length:p.photos},(_,i)=>`<img src="${img(p,i+1)}" alt="${esc(p.type)}, снимка ${i+1}">`).join("");
+  lb.hidden=false;document.body.style.overflow="hidden";lbOpen=true;
+  requestAnimationFrame(()=>{lbs.scrollLeft=start*lbs.clientWidth;lbUpd()});
+  history.pushState({lb:1},"");
+}
+function closeLB(fromPop){if(!lbOpen)return;lbOpen=false;lb.hidden=true;document.body.style.overflow="";if(!fromPop)history.back()}
+lbs.addEventListener("scroll",lbUpd,{passive:true});
+lbp.onclick=()=>lbs.scrollBy({left:-lbs.clientWidth,behavior:"smooth"});
+lbn.onclick=()=>lbs.scrollBy({left:lbs.clientWidth,behavior:"smooth"});
+document.getElementById("lb-close").onclick=()=>closeLB(false);
+window.addEventListener("popstate",()=>closeLB(true));
+document.addEventListener("keydown",e=>{if(!lbOpen)return;if(e.key==="Escape")closeLB(false);if(e.key==="ArrowRight")lbn.click();if(e.key==="ArrowLeft")lbp.click()});
+window.addEventListener("resize",()=>{if(lbOpen)lbUpd()});
 function route(){const p=P.find(x=>x.id===location.hash.slice(1));if(p)detail(p);else{list();window.scrollTo(0,0)}}
 window.addEventListener("hashchange",route);route();
 </script>
