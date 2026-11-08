@@ -128,6 +128,17 @@ ul.pts{margin:0;padding-left:18px;display:grid;gap:6px}
 .who span{font-family:var(--mono);font-size:13px;color:var(--muted);user-select:all}
 .acts{display:flex;gap:8px}
 .acts .btn{padding:9px 13px;font-size:14px}
+.about{margin-top:34px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 18px;display:grid;gap:14px;scroll-margin-top:16px}
+.about-head{display:flex;align-items:center;gap:14px}
+.about-head img{width:84px;height:84px;border-radius:50%;object-fit:cover;flex:none}
+.about h2{font-family:var(--display);font-weight:400;font-size:24px;line-height:1.15;margin:0}
+.about .role{color:var(--muted);font-size:14px}
+.about p{margin:0}
+.about .last{font-weight:600}
+.contacts{display:grid;gap:8px;margin-top:4px}
+.contacts a{display:flex;align-items:center;gap:10px;padding:11px 14px;border:1px solid var(--line);border-radius:12px;color:var(--ink);text-decoration:none;font-size:15px}
+.contacts a span{color:var(--muted);font-size:12.5px;min-width:64px}
+.who b{cursor:pointer}
 footer{color:var(--muted);font-size:12.5px;margin-top:28px}
 @media (prefers-reduced-motion:no-preference){.card{transition:transform .15s}.card:active{transform:scale(.99)}}
 </style>
@@ -141,7 +152,7 @@ footer{color:var(--muted);font-size:12.5px;margin-top:28px}
 
 <div class="bar">
   <div class="bar-in">
-    <div class="who"><b>Ник Капитанов · ЕРА Вива</b><span id="phone">0878 760 894</span></div>
+    <div class="who"><b id="who">Ник Капитанов · ЕРА Вива</b><span id="phone">0878 760 894</span></div>
     <div class="acts">
       <a class="btn primary" href="tel:+359878760894">Обади се</a>
       <a class="btn viber" href="viber://chat?number=%2B359878760894">Viber</a>
@@ -209,7 +220,21 @@ function list(){
   <div class="list">${items.map(p=>{const s=STATUS[p.status];return `<button class="card" type="button" data-id="${p.id}">
     <div class="tile ${tileClass(p)}${tileStyle(p)}"><span class="no">${esc(p.short)}</span><span class="rooms">№ ${p.no}</span></div>
     <div class="cbody"><span class="ctitle">${title(p)}</span><span class="cplace">${esc(p.place)}</span><span class="cmeta">${esc(p.area)}</span>
-    <div class="crow">${priceHtml(p,"price")}${pills(p)}</div></div></button>`}).join("")||'<p class="count">Няма имоти в този филтър.</p>'}</div>`;
+    <div class="crow">${priceHtml(p,"price")}${pills(p)}</div></div></button>`}).join("")||'<p class="count">Няма имоти в този филтър.</p>'}</div>
+  <section class="about" id="about">
+    <div class="about-head"><img src="brand/nik.jpg" alt="Ник Капитанов" width="84" height="84" loading="lazy"><div><h2>Ник Капитанов</h2><div class="role">Брокер на имоти · ЕРА Вива, Варна</div></div></div>
+    <p>26 години продавам неща, за които хората мислят дълго: автомобили, луксозни бизнес подаръци, а последните две години жилища. Научих, че такава покупка се решава с доверие, а то се гради с постоянство.</p>
+    <p>Работя в широкия център на Варна, от Възраждане до Виница и Ален мак и надолу към морето. Основно жилища за семейства, а за строители и парцели за еднофамилни и многофамилни сгради.</p>
+    <p>Почти всичките ми сделки са с колеги от ЕРА и от други агенции. За теб това значи, че търся сред целия пазар, не само сред моите оферти.</p>
+    <p class="last">Ще ти кажа и това, което го няма в обявата.</p>
+    <div class="contacts">
+      <a href="tel:+359878760894"><span>Телефон</span>0878 760 894</a>
+      <a href="viber://chat?number=%2B359878760894"><span>Viber</span>0878 760 894</a>
+      <a href="https://wa.me/359878760894" target="_blank" rel="noopener"><span>WhatsApp</span>0878 760 894</a>
+      <a href="mailto:nkapitanov.era@gmail.com"><span>Имейл</span>nkapitanov.era@gmail.com</a>
+      <a href="https://www.google.com/maps/search/?api=1&query=%D0%95%D0%A0%D0%90%20%D0%92%D0%B8%D0%B2%D0%B0%2C%20%D1%83%D0%BB.%20%D0%94%D0%B8%D0%BC%D0%B8%D1%82%D1%8A%D1%80%20%D0%98%D0%BA%D0%BE%D0%BD%D0%BE%D0%BC%D0%BE%D0%B2%2017%2C%20%D0%92%D0%B0%D1%80%D0%BD%D0%B0" target="_blank" rel="noopener"><span>Офис</span>ЕРА Вива, ул. Димитър Икономов 17</a>
+    </div>
+  </section>`;
   app.querySelectorAll(".chip").forEach(b=>b.onclick=()=>{const x=app.querySelector(".chips").scrollLeft;filter=b.dataset.f;try{localStorage.setItem("zh-filter",filter)}catch(e){}list();app.querySelector(".chips").scrollLeft=x});
   app.querySelectorAll(".card").forEach(c=>c.onclick=()=>{location.hash=c.dataset.id});
 }
@@ -258,7 +283,8 @@ document.getElementById("lb-close").onclick=()=>closeLB(false);
 window.addEventListener("popstate",()=>closeLB(true));
 document.addEventListener("keydown",e=>{if(!lbOpen)return;if(e.key==="Escape")closeLB(false);if(e.key==="ArrowRight")lbn.click();if(e.key==="ArrowLeft")lbp.click()});
 window.addEventListener("resize",()=>{if(lbOpen)lbUpd()});
-function route(){const p=P.find(x=>x.id===location.hash.slice(1));if(p)detail(p);else{list();window.scrollTo(0,0)}}
+function route(){const h=location.hash.slice(1),p=P.find(x=>x.id===h);if(p)detail(p);else{list();const a=h==="about"&&document.getElementById("about");a?a.scrollIntoView():window.scrollTo(0,0)}}
+document.getElementById("who").onclick=()=>{if(location.hash==="#about"){const a=document.getElementById("about");a&&a.scrollIntoView({behavior:"smooth"})}else location.hash="about"};
 window.addEventListener("hashchange",route);route();
 </script>
 </body>
