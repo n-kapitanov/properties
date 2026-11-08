@@ -169,7 +169,7 @@ const pills=p=>{const s=STATUS[p.status];return `<span class="pills"><span class
 const priceHtml=(p,cls)=>p.price?`<span class="${cls}">${esc(p.price)}</span>`:`<span class="${cls} ask">Цена при запитване</span>`;
 function list(){
   const items=P.filter(match);
-  app.innerHTML=`<header><img class="brand" src="brand/logo-small.png" alt="Ник Капитанов · имоти" width="132" height="76"><span class="eyebrow">Варна и региона · ${P.length} имота</span><h1>Жилища за вас и семейството</h1><p class="lede">Подбрани имоти за собствен дом или за отдаване под наем. Докоснете имот за подробности.</p></header>
+  app.innerHTML=`<header><img class="brand" src="brand/logo-small.png" alt="Ник Капитанов · имоти" width="132" height="76"><span class="eyebrow">Варна и региона · ${P.length} имота</span><h1>Открий своя дом</h1><p class="lede">Подбрани имоти за собствен дом или за отдаване под наем. Докоснете имот за подробности.</p></header>
   <div class="chips" role="group" aria-label="Филтър">${FILTERS.map(([k,l])=>`<button class="chip" type="button" data-f="${k}" aria-pressed="${k===filter}">${l}</button>`).join("")}</div>
   <p class="count">${items.length===P.length?"Показани всички":"Показани "+items.length+" от "+P.length}</p>
   <div class="list">${items.map(p=>{const s=STATUS[p.status];return `<button class="card" type="button" data-id="${p.id}">
