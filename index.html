@@ -42,7 +42,8 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font
 header{display:grid;gap:6px;padding-block:8px 18px}
 header{grid-template-columns:1fr auto;column-gap:12px;align-items:start}
 .htext{display:grid;gap:6px;min-width:0}
-.brand{grid-column:2;grid-row:1;width:clamp(78px,24vw,96px);height:auto;margin-top:-2px}
+.brandlink{grid-column:2;grid-row:1;display:block;line-height:0}
+.brand{width:clamp(78px,24vw,96px);height:auto;margin-top:-2px}
 header .lede{grid-column:1/-1}
 .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
 h1{font-family:var(--display);font-weight:400;font-size:30px;line-height:1.15;margin:0;text-wrap:balance}
@@ -87,6 +88,7 @@ h1{font-family:var(--display);font-weight:400;font-size:30px;line-height:1.15;ma
 .pill.new{}
 .detail{display:grid;gap:18px}
 .dtop{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.brandlink.sm{grid-column:auto;grid-row:auto}
 .brand.sm{width:64px;margin:0}
 .back{justify-self:start;background:none;border:0;color:var(--ink);font:600 15px var(--body);padding:6px 0;cursor:pointer}
 .hero{border-radius:16px;min-height:170px}
@@ -182,7 +184,7 @@ const pills=p=>{const s=STATUS[p.status];return `<span class="pills"><span class
 const priceHtml=(p,cls)=>p.price?`<span class="${cls}">${esc(p.price)}</span>`:`<span class="${cls} ask">Цена при запитване</span>`;
 function list(){
   const items=P.filter(match);
-  app.innerHTML=`<header><div class="htext"><span class="eyebrow">Варна и региона · ${P.length} имота</span><h1>Открий своя дом</h1></div><img class="brand" src="brand/logo-small.png" alt="Ник Капитанов · имоти" width="96" height="55"><p class="lede">Подбрани имоти за собствен дом или за отдаване под наем. Докосни имот за подробности.</p></header>
+  app.innerHTML=`<header><div class="htext"><span class="eyebrow">Варна и региона · ${P.length} имота</span><h1>Открий своя дом</h1></div><a class="brandlink" href="#" aria-label="Към началото"><img class="brand" src="brand/logo-small.png" alt="Ник Капитанов · имоти" width="96" height="55"></a><p class="lede">Подбрани имоти за собствен дом или за отдаване под наем. Докосни имот за подробности.</p></header>
   <div class="chips" role="group" aria-label="Филтър">${FILTERS.map(([k,l])=>`<button class="chip" type="button" data-f="${k}" aria-pressed="${k===filter}">${l}</button>`).join("")}</div>
   <p class="count">${items.length===P.length?"Показани всички":"Показани "+items.length+" от "+P.length}</p>
   <div class="list">${items.map(p=>{const s=STATUS[p.status];return `<button class="card" type="button" data-id="${p.id}">
@@ -194,7 +196,7 @@ function list(){
 }
 function detail(p){
   const s=STATUS[p.status];
-  app.innerHTML=`<article class="detail"><div class="dtop"><button class="back" type="button" id="back">‹ Всички имоти</button><img class="brand sm" src="brand/logo-small.png" alt="Ник Капитанов · имоти" width="64" height="37"></div>
+  app.innerHTML=`<article class="detail"><div class="dtop"><button class="back" type="button" id="back">‹ Всички имоти</button><a class="brandlink sm" href="#" aria-label="Към началото"><img class="brand sm" src="brand/logo-small.png" alt="Ник Капитанов · имоти" width="64" height="37"></a></div>
   ${p.photos?`<div class="gwrap"><button class="garrow prev" type="button" aria-label="Предишна снимка">‹</button><button class="garrow next" type="button" aria-label="Следваща снимка">›</button><div class="gallery" aria-label="Снимки">${Array.from({length:p.photos},(_,i)=>`<img src="${img(p,i+1)}" alt="${esc(p.type)}, снимка ${i+1}" loading="${i?"lazy":"eager"}">`).join("")}</div></div><p class="gcount">${p.photos} снимки</p>`:`<div class="tile hero ${tileClass(p)}"><span class="no">${esc(p.short)}</span><span class="rooms">${esc(p.rooms)} · № ${p.no}</span></div>`}
   <div class="dhead"><span style="justify-self:start">${pills(p)}</span><h2>${title(p)}</h2><span class="cplace">${esc(p.place)}</span>
   ${priceHtml(p,"dprice")}${p.priceNote?`<span class="cmeta">${esc(p.priceNote)}</span>`:""}</div>
@@ -212,7 +214,7 @@ function detail(p){
     nx.onclick=()=>g.scrollBy({left:g.clientWidth,behavior:"smooth"});
     g.addEventListener("scroll",upd,{passive:true});upd();}
 }
-function route(){const p=P.find(x=>x.id===location.hash.slice(1));p?detail(p):list()}
+function route(){const p=P.find(x=>x.id===location.hash.slice(1));if(p)detail(p);else{list();window.scrollTo(0,0)}}
 window.addEventListener("hashchange",route);route();
 </script>
 </body>
