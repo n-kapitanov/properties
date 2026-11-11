@@ -1,0 +1,35 @@
+name: Share pages
+
+# Rebuilds the per-property share pages (NNN/index.html) and preview images
+# (images/NNN/og.jpg) whenever the property list or photos change, so every
+# property link shows its own cover photo in Viber, WhatsApp and Facebook.
+on:
+  push:
+    branches: [main]
+    paths:
+      - index.html
+      - "images/**/01.jpg"
+      - tools/build_share_pages.py
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pillow
+      - run: python3 tools/build_share_pages.py
+      - name: Commit changes
+        run: |
+          git add -A
+          if git diff --cached --quiet; then echo "Nothing to update"; exit 0; fi
+          git config user.name "share-pages-bot"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git commit -m "Update share pages"
+          git push

@@ -127,6 +127,7 @@ ul.pts{margin:0;padding-left:18px;display:grid;gap:6px}
 .who b{font-size:14.5px}
 .who span{font-family:var(--mono);font-size:13px;color:var(--muted);user-select:all}
 .acts{display:flex;gap:8px}
+.btn.share{justify-self:start}
 .acts .btn{padding:9px 13px;font-size:14px}
 .about{margin-top:34px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 18px;display:grid;gap:14px;scroll-margin-top:16px}
 .about-head{display:flex;align-items:center;gap:14px}
@@ -260,8 +261,14 @@ function detail(p){
   <dl class="facts">${p.facts.map(([k,v])=>`<div class="fact"><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>
   <section><h3>Какво получаваш</h3><ul class="pts">${p.pts.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></section>
   <p class="count">Още снимки и оглед: обади се или пиши във Viber.</p>
+  <button class="btn share" type="button" id="share">Сподели имота</button>
   </article>`;
   document.getElementById("back").onclick=()=>{history.length>1&&location.hash?(location.hash=""):list()};
+  const sh=document.getElementById("share");
+  sh.onclick=async()=>{const url="https://n-kapitanov.github.io/properties/"+p.no+"/";
+    if(navigator.share){try{await navigator.share({title:p.type+" · "+p.short,url});return}catch(e){if(e&&e.name==="AbortError")return}}
+    try{await navigator.clipboard.writeText(url);sh.textContent="Линкът е копиран"}catch(e){prompt("Копирай линка:",url)}
+    setTimeout(()=>sh.textContent="Сподели имота",2000)};
   window.scrollTo(0,0);
   const g=app.querySelector(".gallery");
   if(g){const pr=app.querySelector(".garrow.prev"),nx=app.querySelector(".garrow.next");
