@@ -252,10 +252,10 @@ const title=p=>esc(p.type)+(p.other?" *":"");
 const pills=p=>{const s=STATUS[p.status];return `<span class="pills"><span class="pill ${s[1]}">${s[0]}</span>${p.finish?`<span class="pill">${esc(p.finish)}</span>`:""}</span>`};
 const priceHtml=(p,cls)=>p.price?`<span class="${cls}">${esc(p.price)}</span>`:`<span class="${cls} ask">Цена при запитване</span>`;
 function list(){
-  const items=P.filter(match);
-  app.innerHTML=`<header><div class="htext"><span class="eyebrow">Варна и региона · ${P.length} имота</span><h1>Открий своя дом</h1></div><a class="brandlink" href="#" aria-label="Към началото"><img class="brand" src="brand/logo-small.png" alt="Ник Капитанов · имоти" width="96" height="55"></a><p class="lede">Подбрани имоти за собствен дом или за отдаване под наем. Докосни имот за подробности.</p></header>
+  const V=P.filter(p=>!p.hidden),items=V.filter(match);
+  app.innerHTML=`<header><div class="htext"><span class="eyebrow">Варна и региона · ${V.length} имота</span><h1>Открий своя дом</h1></div><a class="brandlink" href="#" aria-label="Към началото"><img class="brand" src="brand/logo-small.png" alt="Ник Капитанов · имоти" width="96" height="55"></a><p class="lede">Подбрани имоти за собствен дом или за отдаване под наем. Докосни имот за подробности.</p></header>
   <div class="chips" role="group" aria-label="Филтър">${FILTERS.map(([k,l])=>`<button class="chip" type="button" data-f="${k}" aria-pressed="${k===filter}">${l}</button>`).join("")}</div>
-  <p class="count">${items.length===P.length?"Показани всички":"Показани "+items.length+" от "+P.length}</p>
+  <p class="count">${items.length===V.length?"Показани всички":"Показани "+items.length+" от "+V.length}</p>
   <div class="list">${items.map(p=>{const s=STATUS[p.status];return `<button class="card" type="button" data-id="${p.id}">
     <div class="tile ${tileClass(p)}${tileStyle(p)}"><span class="no">${esc(p.short)}</span><span class="rooms">№ ${p.no}</span></div>
     <div class="cbody"><span class="ctitle">${title(p)}</span><span class="cplace">${esc(p.place)}</span><span class="cmeta">${esc(p.area)}</span>
