@@ -11,3 +11,4 @@ Client page for Nik Kapitanov's properties. `index.html` holds everything; the p
 ## Hidden properties (offer withdrawn or sold)
 - Never delete a property from `P`. Add `hidden:true` to its entry instead: it disappears from the public list and the count, but its data, photos and the `/NNN/` share page stay, so Nik can bring it back by removing the flag.
 - The daily import task "Внасяне на имоти от era.bg" checks each property's era.bg listing (link in its „Данни“ doc) and sets or clears `hidden:true`.
+- `hold:true` (always together with `hidden:true`) means Nik hid the property by hand (e.g. under preliminary contract; the era.bg listing may come back only for the bank valuation). No automatic task may remove `hidden:true` or `hold:true` from such an entry, even if its era.bg listing is active again. Only Nik decides; report it instead.
